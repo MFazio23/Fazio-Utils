@@ -6,7 +6,7 @@ import org.junit.Test;
 import static junit.framework.Assert.*;
 
 /**
- * @author Michael Fazio <michael.fazio@kohls.com>
+ * @author Michael Fazio
  * @since 11/20/12 10:19 AM
  */
 public class RangeTest {

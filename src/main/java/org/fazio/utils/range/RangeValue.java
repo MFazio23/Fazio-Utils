@@ -8,7 +8,7 @@ public class RangeValue extends Range {
 	private final Object value;
 
 	public RangeValue(final Object value) {
-		this(100.0, value);
+		this(Range.DEFAULT_RANGE_END, value);
 	}
 	
 	public RangeValue(final double rangeSize, final Object value) {

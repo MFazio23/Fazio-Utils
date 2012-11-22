@@ -3,10 +3,14 @@ package org.fazio.utils.map;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
- * @author Michael Fazio <michael.fazio@kohls.com>
+ * @author Michael Fazio
  * @since 11/20/12 8:34 PM
  */
 public class CountingHashMapTest {
@@ -18,11 +22,11 @@ public class CountingHashMapTest {
 		this.map = new CountingHashMap<String, Integer>(){{
 			this.put("Lakers", 8);
 			this.put("Celtics", 13);
-			this.put("Magic", 8);
+			this.put("Magic", 7);
 			this.put("76ers", 0);
 			this.put("Bucks", 2);
 			this.put("Pistons", 4);
-			this.put("Bulls", 8);
+			this.put("Bulls", 5);
 		}};
 	}
 
@@ -74,11 +78,11 @@ public class CountingHashMapTest {
 		for(Number value : this.map.values()) {
 			total += value.intValue();
 		}
-		assertEquals("The total value of items in the map is incorrect.", 43, total);
+		assertEquals("The total value of items in the map is incorrect.", 39, total);
 		assertEquals("The value for \"Celtics\" is incorrect.", 13, this.map.get("Celtics"));
 		assertEquals("The value for \"Bucks\" is incorrect.", 2, this.map.get("Bucks"));
 		assertEquals("The value for \"Pistons\" is incorrect.", 4, this.map.get("Pistons"));
-		assertEquals("The value for \"Bulls\" is incorrect.", 8, this.map.get("Bulls"));
+		assertEquals("The value for \"Bulls\" is incorrect.", 5, this.map.get("Bulls"));
 
 		this.map.reset();
 
@@ -99,11 +103,11 @@ public class CountingHashMapTest {
 		for(Number value : this.map.values()) {
 			total += value.intValue();
 		}
-		assertEquals("The total value of items in the map is incorrect.", 43, total);
+		assertEquals("The total value of items in the map is incorrect.", 39, total);
 		assertEquals("The value for \"Celtics\" is incorrect.", 13, this.map.get("Celtics"));
 		assertEquals("The value for \"Bucks\" is incorrect.", 2, this.map.get("Bucks"));
 		assertEquals("The value for \"Pistons\" is incorrect.", 4, this.map.get("Pistons"));
-		assertEquals("The value for \"Bulls\" is incorrect.", 8, this.map.get("Bulls"));
+		assertEquals("The value for \"Bulls\" is incorrect.", 5, this.map.get("Bulls"));
 
 		this.map.setAll(10);
 
@@ -116,5 +120,43 @@ public class CountingHashMapTest {
 		assertEquals("The value for \"Bucks\" is incorrect.", 10, this.map.get("Celtics"));
 		assertEquals("The value for \"Pistons\" is incorrect.", 10, this.map.get("Celtics"));
 		assertEquals("The value for \"Bulls\" is incorrect.", 10, this.map.get("Celtics"));
+	}
+
+	@Test
+	public void testSortByKey() throws Exception {
+		final String[] sortedKeys = {"76ers", "Bucks", "Bulls", "Celtics", "Lakers", "Magic", "Pistons"};
+
+		this.map.sortByKeys();
+
+		List<String> keys = new ArrayList<String>(this.map.keySet());
+		for(int x=0;x<this.map.size();x++) {
+			assertEquals("The value in the sorted map is not what was expected.", sortedKeys[x], keys.get(x));
+		}
+
+		this.map.sortByKeys(false);
+
+		keys = new ArrayList<String>(this.map.keySet());
+		for(int x=0;x<this.map.size();x++) {
+			assertEquals("The value in the sorted map is not what was expected.", sortedKeys[x], keys.get(this.map.size() - 1 - x));
+		}
+	}
+
+	@Test
+	public void testSortByCounts() throws Exception {
+		final String[] sortedKeys = {"76ers", "Bucks", "Pistons", "Bulls", "Magic", "Lakers", "Celtics"};
+
+		this.map.sortByCounts();
+
+		List<String> keys = new ArrayList<String>(this.map.keySet());
+		for(int x=0;x<this.map.size();x++) {
+			assertEquals("The value in the sorted map is not what was expected.", sortedKeys[x], keys.get(x));
+		}
+
+		this.map.sortByCounts(false);
+
+		keys = new ArrayList<String>(this.map.keySet());
+		for(int x=0;x<this.map.size();x++) {
+			assertEquals("The value in the sorted map is not what was expected.", sortedKeys[x], keys.get(this.map.size() - 1 - x));
+		}
 	}
 }
