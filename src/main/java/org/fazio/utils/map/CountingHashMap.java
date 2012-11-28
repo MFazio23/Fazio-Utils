@@ -46,8 +46,8 @@ public class CountingHashMap<K, V extends Number>
 	}
 
 	public void sortByKeys(final boolean lowToHigh) {
-		this.sortMap(lowToHigh, new Comparator<Map.Entry<K, Number>>() {
-			public int compare(final Map.Entry<K, Number> kNumberEntry1, final Map.Entry<K, Number> kNumberEntry2) {
+		this.sortMap(lowToHigh, new Comparator<CountingMap.Entry<K, Number>>() {
+			public int compare(final CountingMap.Entry<K, Number> kNumberEntry1, final CountingMap.Entry<K, Number> kNumberEntry2) {
 				final String k1 = kNumberEntry1.getKey().toString();
 				final String k2 = kNumberEntry2.getKey().toString();
 
@@ -61,8 +61,8 @@ public class CountingHashMap<K, V extends Number>
 	}
 
 	public void sortByCounts(final boolean lowToHigh) {
-		this.sortMap(lowToHigh, new Comparator<Map.Entry<K, Number>>() {
-			public int compare(final Map.Entry<K, Number> kNumberEntry1, final Map.Entry<K, Number> kNumberEntry2) {
+		this.sortMap(lowToHigh, new Comparator<CountingMap.Entry<K, Number>>() {
+			public int compare(final CountingMap.Entry<K, Number> kNumberEntry1, final CountingMap.Entry<K, Number> kNumberEntry2) {
 				final long v1 = kNumberEntry1.getValue().longValue();
 				final long v2 = kNumberEntry2.getValue().longValue();
 
@@ -73,7 +73,7 @@ public class CountingHashMap<K, V extends Number>
 		});
 	}
 
-	public void sortMap(final boolean lowToHigh, final Comparator comparator) {
+	public void sortMap(final boolean lowToHigh, final Comparator<CountingMap.Entry<K, Number>> comparator) {
 		final List<CountingMap.Entry<K, Number>> entryList = new ArrayList<Map.Entry<K, Number>>(this.entrySet());
 
 		Collections.sort(entryList, comparator);

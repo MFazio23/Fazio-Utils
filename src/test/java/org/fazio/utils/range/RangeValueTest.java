@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * @author Michael Fazio <michael.fazio@kohls.com>
@@ -11,15 +13,15 @@ import static junit.framework.Assert.assertEquals;
  */
 public class RangeValueTest {
 
-	RangeValue basicValue;
-	RangeValue sizeValue;
-	RangeValue startEndValue;
+	RangeValue<String> basicValue;
+	RangeValue<String> sizeValue;
+	RangeValue<String> startEndValue;
 
 	@Before
 	public void setUp() throws Exception {
-		this.basicValue = new RangeValue("Basic");
-		this.sizeValue = new RangeValue(74, "Size");
-		this.startEndValue = new RangeValue(23, 104, "Start/End");
+		this.basicValue = new RangeValue<String>("Basic");
+		this.sizeValue = new RangeValue<String>("Size", 74);
+		this.startEndValue = new RangeValue<String>("Start/End", 23, 104);
 	}
 
 	@Test
@@ -38,6 +40,13 @@ public class RangeValueTest {
 		assertEquals("The start of the range is incorrect.", 23.0, this.startEndValue.getStart());
 		assertEquals("The end of the range is incorrect.", 104.0, this.startEndValue.getEnd());
 		assertEquals("The range size is incorrect.", 104.0-23.0, this.startEndValue.getRangeSize());
+
+		final RangeValue<String> newBasicValue = new RangeValue<String>(this.basicValue);
+		assertEquals("The value is incorrect.", "Basic", newBasicValue.getValue());
+		assertEquals("The start of the range is incorrect.", Range.DEFAULT_RANGE_START, newBasicValue.getStart());
+		assertEquals("The end of the range is incorrect.", Range.DEFAULT_RANGE_END, newBasicValue.getEnd());
+		assertEquals("The range size is incorrect.", Range.DEFAULT_RANGE_END - Range.DEFAULT_RANGE_START, newBasicValue.getRangeSize());
+
 	}
 
 	@Test
@@ -45,6 +54,30 @@ public class RangeValueTest {
 		assertEquals("The returned range value is incorrect.", "Basic", this.basicValue.getRangeValue());
 		assertEquals("The returned range value is incorrect.", "Size", this.sizeValue.getRangeValue());
 		assertEquals("The returned range value is incorrect.", "Start/End", this.startEndValue.getRangeValue());
+	}
+
+	@Test
+	public void testEquals() throws Exception {
+		RangeValue<String> basic2 = new RangeValue<String>("Basic");
+		RangeValue<String> basic3 = new RangeValue<String>("Basic", 14, 102);
+		RangeValue<String> notBasic = new RangeValue<String>("Not Basic");
+		RangeValue<String> nullValue = new RangeValue<String>(null, 100);
+		RangeValue<String> nullValue2 = new RangeValue<String>(null, 75);
+		RangeValue<String> nullRange = null;
+		Double doubleObj = 24.53;
+		Integer nullInt = null;
+
+		assertTrue("The values are not considered equal and should be.", this.basicValue.equals(this.basicValue));
+		assertTrue("The values are not considered equal and should be.", this.basicValue.equals(basic2));
+		assertTrue("The values are not considered equal and should be.", this.basicValue.equals(basic3));
+		assertFalse("The values are considered equal and should not be.", this.basicValue.equals(notBasic));
+		assertFalse("The values are considered equal and should not be.", this.basicValue.equals(this.sizeValue));
+		assertFalse("The values are considered equal and should not be.", this.basicValue.equals(nullValue));
+		assertFalse("The values are considered equal and should not be.", nullValue.equals(this.basicValue));
+		assertTrue("The values are not considered equal and should be.", nullValue.equals(nullValue2));
+		assertFalse("The values are considered equal and should not be.", this.basicValue.equals(nullRange));
+		assertFalse("The values are considered equal and should not be.", this.basicValue.equals(doubleObj));
+		assertFalse("The values are considered equal and should not be.", this.basicValue.equals(nullInt));
 	}
 
 	@Test

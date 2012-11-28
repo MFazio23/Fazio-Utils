@@ -6,12 +6,13 @@ import java.util.List;
 /**
  * @author Michael Fazio
  */
-public class RangeGroup extends Range {
+public class RangeGroup<V> extends Range<V> {
 
-	private final List<Range> rangeList = new ArrayList<Range>();
-	private Range defaultRange;
+	public static final double DEFAULT_SUB_RANGE_SIZE = 100.0;
 
-	private static final String DEFAULT_RANGE_VALUE = "Default";
+	private final List<Range<V>> rangeList = new ArrayList<Range<V>>();
+	private Range<V> defaultRange;
+	private double subRangeSize = RangeGroup.DEFAULT_SUB_RANGE_SIZE;
 
 	public RangeGroup() {
 		super();
@@ -21,15 +22,21 @@ public class RangeGroup extends Range {
 		super(rangeSize);
 	}
 
-	public RangeGroup(final double start, final double end) {
-		super(start, end);
+	public RangeGroup(final double rangeSize, final double subRangeSize) {
+		super(rangeSize);
+		this.subRangeSize = subRangeSize;
 	}
 
 	@Override
-	public Object getRangeValue(final double value) {
-		Object rangeValue = defaultRange == null ? null : defaultRange.getRangeValue();
+	public V getRangeValue() {
+		return this.getRangeValue(Math.random() * this.getSubRangeListSize());
+	}
 
-		for(Range checkRange : this.rangeList) {
+	@Override
+	public V getRangeValue(final double value) {
+		V rangeValue = (defaultRange != null) ? defaultRange.getRangeValue() : null;
+
+		for(Range<V> checkRange : this.rangeList) {
 			if(checkRange.isInRange(value)) {
 				rangeValue = checkRange.getRangeValue();
 			}
@@ -38,59 +45,70 @@ public class RangeGroup extends Range {
 		return rangeValue;
 	}
 
-	private void recalculateRanges() {
-		double lastEndRange = DEFAULT_RANGE_START;
-		this.rangeSize = 0;
-		for(Range range : this.rangeList) {
-			this.rangeSize += range.getRangeSize();
-			lastEndRange = range.setRange(lastEndRange);
-		}
-
-		if(this.defaultRange == null) {
-			this.defaultRange = new RangeValue(DEFAULT_RANGE_VALUE);
-			this.defaultRange.setRange(lastEndRange, 0.0);
-		}
-
-		this.end = this.start + this.rangeSize;
+	public RangeGroup<V> addRangeValue(final V value, final double size) {
+		return this.addToRangeGroup(new RangeValue<V>(value, size));
 	}
 
-	public RangeGroup addRangeValue(final Object value) {
-		return this.addToRangeGroup(new RangeValue(value));
-	}
-
-	public RangeGroup addRangeValue(final Object value, final double size) {
-		return this.addToRangeGroup(new RangeValue(size, value));
-	}
-
-	public RangeGroup addRangeValue(final Object value, final double start, final double end) {
-		return this.addToRangeGroup(new RangeValue(start, end, value));
-	}
-
-	public RangeGroup addToRangeGroup(final Range range) {
+	public RangeGroup<V> addToRangeGroup(final Range<V> range) {
 		this.rangeList.add(range);
 
-		this.recalculateRanges();
+		this.updateRangeSizes();
 
 		return this;
 	}
 
-	public Range getDefaultRange() {
+	private void updateRangeSizes() {
+		double end = 0.0;
+		for(Range<V> range : this.rangeList) {
+			range.setStart(end);
+			end += range.getRangeSize();
+		}
+
+		if(this.defaultRange != null) this.defaultRange.setRange(end, this.subRangeSize);
+	}
+
+	public RangeGroup<V> setDefaultRange(final Range<V> defaultRange) {
+		this.defaultRange = defaultRange;
+		this.updateRangeSizes();
+		return this;
+	}
+
+	public RangeGroup<V> setDefaultRangeValue(final V defaultValue) {
+		return this.setDefaultRange(new RangeValue<V>(defaultValue));
+	}
+
+	public Range<V> getDefaultRange() {
 		return this.defaultRange;
 	}
 
-	public RangeGroup setDefaultRange(final Range range) {
-		this.defaultRange = range;
+	public double getSubRangeListSize() {
+		double size = this.defaultRange != null ? this.defaultRange.getRangeSize() : 0.0;
+		for(Range<V> range : this.rangeList) {
+			size += range.getRangeSize();
+		}
 
-		this.recalculateRanges();
+		return size;
+	}
 
-		return this;
+	public double getSubRangeSize() {
+		return this.subRangeSize;
+	}
+
+	public double setSubRangeSize(final double subRangeSize) {
+		if(this.defaultRange != null) this.defaultRange.setEnd(subRangeSize);
+		this.subRangeSize = subRangeSize;
+		return subRangeSize;
+	}
+
+	public int getRangeCount() {
+		return this.rangeList.size() + (this.defaultRange == null ? 0 : 1);
 	}
 
 	public String toString(final int level) {
 		StringBuilder sb = new StringBuilder();
 		for(int x=0;x<level;x++) sb.append("\t");
 		sb.append("Range Group: Size = ");
-		sb.append(super.rangeSize);
+		sb.append(super.end - super.start);
 		sb.append("[");
 		sb.append(super.start);
 		sb.append(" -> ");
@@ -100,9 +118,10 @@ public class RangeGroup extends Range {
 			sb.append(range.toString(level + 1));
 			sb.append('\n');
 		}
-
-		sb.append(this.defaultRange == null ? "" : this.defaultRange.toString(level + 1));
-		sb.append(" (Default)");
+		if(this.defaultRange != null) {
+			sb.append(this.defaultRange.toString(level + 1));
+			sb.append(" (Default)");
+		}
 
 		return sb.toString();
 	}

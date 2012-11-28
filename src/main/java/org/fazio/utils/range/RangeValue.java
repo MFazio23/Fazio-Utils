@@ -3,40 +3,62 @@ package org.fazio.utils.range;
 /**
  * @author Michael Fazio
  */
-public class RangeValue extends Range {
+public class RangeValue<V> extends Range<V> {
 	
-	private final Object value;
+	private final V value;
 
-	public RangeValue(final Object value) {
-		this(Range.DEFAULT_RANGE_END, value);
+	public RangeValue(final RangeValue<V> startingValue) {
+		super(startingValue.getStart(), startingValue.getEnd());
+		this.value = startingValue.getValue();
+	}
+
+	public RangeValue(final V value) {
+		super();
+		this.value = value;
 	}
 	
-	public RangeValue(final double rangeSize, final Object value) {
+	public RangeValue(final V value, final double rangeSize) {
 		super(rangeSize);
 		this.value = value;
 	}
 
-	public RangeValue(final double start, final double end, final Object value) {
+	public RangeValue(final V value, final double start, final double end) {
 		super(start, end);
 		this.value = value;
 	}
 
 	@Override
-	public Object getRangeValue(final double value) {
+	public V getRangeValue(final double value) {
 		return this.getValue();
 	}
 	
-	public Object getValue() {
+	public V getValue() {
 		return this.value;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean equals(final Object o) {
+		if (this == o) return true;
+		if (o == null || this.getClass() != o.getClass()) return false;
+
+		final RangeValue<V> that = (RangeValue) o;
+
+		return this.value != null ? this.value.equals(that.value) : that.value == null;
+	}
+
+	@Override
+	public int hashCode() {
+		return value != null ? value.hashCode() : 0;
 	}
 
 	@Override
 	public String toString() {
 		return new StringBuilder()
 		.append("Range Value: Value = ")
-		.append(this.value)
+		.append(this.value != null ? this.value.toString() : "null")
 		.append(", Size = ")
-		.append(super.rangeSize)
+		.append(super.getRangeSize())
 		.append("[")
 		.append(super.start)
 		.append(" -> ")

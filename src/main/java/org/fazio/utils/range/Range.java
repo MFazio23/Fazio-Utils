@@ -3,17 +3,16 @@ package org.fazio.utils.range;
 /**
  * @author Michael Fazio
  */
-public abstract class Range {
+public abstract class Range<V> {
 
-	public static final double DEFAULT_RANGE_START = 0;
-	public static final double DEFAULT_RANGE_END = 100;
+	public static final double DEFAULT_RANGE_START = 0.0;
+	public static final double DEFAULT_RANGE_END = 100.0;
 
 	protected double start;
 	protected double end;
-	protected double rangeSize;
 
 	public Range() {
-		this(DEFAULT_RANGE_START, DEFAULT_RANGE_END);
+		this(DEFAULT_RANGE_END);
 	}
 
 	public Range(final double rangeSize) {
@@ -22,6 +21,17 @@ public abstract class Range {
 
 	public Range(final double start, final double end) {
 		this.setRange(start, end);
+	}
+
+	public double setRange(final double start, final double end) {
+		this.start = start;
+		this.end = end;
+		return this.end;
+	}
+
+	public double setRangeSize(double rangeSize) {
+		this.end = this.start + rangeSize;
+		return this.end;
 	}
 
 	public boolean isInRange(final double value) {
@@ -33,60 +43,37 @@ public abstract class Range {
 		return inRange;
 	}
 	
-	public Object getRangeValue() {
-		return this.getRangeValue(Math.random() * this.rangeSize);
+	public V getRangeValue() {
+		return this.getRangeValue(Math.random() * (this.end - this.start));
 	}
 	
-	public abstract Object getRangeValue(final double value);
-	
-	public void setRange(final double start, final double end) {
-		this.start = start;
-		this.end = end;
-		this.recalculateRangeSize();
-	}
-
-	public double setRange(final double start) {
-		this.start = start;
-		this.end = this.start + this.rangeSize;
-		this.recalculateRangeSize();
-
-		return this.end;
-	}
-
-	protected double recalculateRangeSize() {
-		this.rangeSize = this.end - this.start;
-		return this.rangeSize;
-	}
+	public abstract V getRangeValue(final double value);
 
 	public double getEnd() {
 		return end;
 	}
 
-	public void setEnd(double end) {
+	public double setEnd(double end) {
 		this.end = end;
-		this.recalculateRangeSize();
+		return this.end - this.start;
 	}
 
 	public double getStart() {
 		return start;
 	}
 
-	public void setStart(double start) {
+	public double setStart(double start) {
+		this.end = this.end - this.start + start;
 		this.start = start;
-		this.recalculateRangeSize();
+		return this.end;
 	}
 
 	public double getRangeSize() {
-		return rangeSize;
-	}
-
-	public void setRangeSize(double rangeSize) {
-		this.rangeSize = rangeSize;
-		this.end = this.start + this.rangeSize;
+		return this.end - this.start;
 	}
 	
 	public String toString() {
-		return "Range: " + this.start + " -> " + this.end + " [" + this.rangeSize + "]";
+		return "Range: " + this.start + " -> " + this.end + " [" + (this.end - this.start) + "]";
 	}
 
 	public String toString(final int level) {
