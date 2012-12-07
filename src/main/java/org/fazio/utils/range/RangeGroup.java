@@ -105,22 +105,26 @@ public class RangeGroup<V> extends Range<V> {
 	}
 
 	public String toString(final int level) {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		for(int x=0;x<level;x++) sb.append("\t");
-		sb.append("Range Group: Size = ");
-		sb.append(super.end - super.start);
-		sb.append("[");
-		sb.append(super.start);
-		sb.append(" -> ");
-		sb.append(super.end);
-		sb.append("]\n");
+		sb
+			.append("Range Group: Size = ")
+			.append(super.end - super.start)
+			.append(" [")
+			.append(super.start)
+			.append(" -> ")
+			.append(super.end)
+			.append("]");
 		for(Range range : this.rangeList) {
-			sb.append(range.toString(level + 1));
-			sb.append('\n');
+			sb
+				.append('\n')
+				.append(range.toString(level + 1));
 		}
 		if(this.defaultRange != null) {
-			sb.append(this.defaultRange.toString(level + 1));
-			sb.append(" (Default)");
+			sb
+				.append('\n')
+				.append(this.defaultRange.toString(level + 1))
+				.append(" (Default)");
 		}
 
 		return sb.toString();

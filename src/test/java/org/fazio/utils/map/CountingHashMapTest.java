@@ -45,6 +45,9 @@ public class CountingHashMapTest {
 		assertEquals("The count is incorrect.", 14, this.map.get(key).intValue());
 		this.map.increaseCount(key, 4);
 		assertEquals("The count is incorrect.", 18, this.map.get(key).intValue());
+		final String newKey = "NewItem";
+		this.map.increaseCount(newKey, 8);
+		assertEquals("The count is incorrect.", 8, this.map.get(newKey).intValue());
 	}
 
 	@Test

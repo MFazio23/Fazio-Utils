@@ -84,15 +84,25 @@ public class RangeValueTest {
 	public void testToString() throws Exception {
 		assertEquals(
 			"The toString() call is incorrect.",
-			"Range Value: Value = Basic, Size = 100.0[0.0 -> 100.0]",
+			"Range Value: Value = Basic, Size = 100.0 [0.0 -> 100.0]",
 			this.basicValue.toString());
 		assertEquals(
 			"The toString() call is incorrect.",
-			"Range Value: Value = Size, Size = 74.0[0.0 -> 74.0]",
+			"Range Value: Value = Size, Size = 74.0 [0.0 -> 74.0]",
 			this.sizeValue.toString());
 		assertEquals(
 			"The toString() call is incorrect.",
-			"Range Value: Value = Start/End, Size = 81.0[23.0 -> 104.0]",
+			"Range Value: Value = Start/End, Size = 81.0 [23.0 -> 104.0]",
 			this.startEndValue.toString());
+		assertEquals(
+			"The toString() call was incorrect.",
+			"Range Value: Value = null, Size = 25.0 [0.0 -> 25.0]",
+			new RangeValue<String>(null, 0, 25).toString());
+	}
+
+	@Test
+	public void testHashCode() throws Exception {
+		assertTrue("The hash code is invalid", this.startEndValue.hashCode() != 0);
+		assertEquals("The hash code is invalid.", 0, new RangeValue<String>(null, 24).hashCode());
 	}
 }

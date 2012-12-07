@@ -122,6 +122,10 @@ public class RangeTest {
 		assertEquals("Start/End range's range size is incorrect.", 116.0, this.rangeStartEnd.getRangeSize());
 		assertEquals("Start/End range's range size is incorrect.", 14.0, this.rangeStartEnd.getStart());
 		assertEquals("Start/End range's range size is incorrect.", 116.0 + 14.0, this.rangeStartEnd.getEnd());
+	}
 
+	@Test
+	public void testToString() throws Exception {
+		assertEquals("The range's toString() is incorrect.", "Range: Size = 100.0 [0.0 -> 100.0]", this.range.toString());
 	}
 }

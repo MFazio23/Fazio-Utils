@@ -59,7 +59,7 @@ public class RangeValue<V> extends Range<V> {
 		.append(this.value != null ? this.value.toString() : "null")
 		.append(", Size = ")
 		.append(super.getRangeSize())
-		.append("[")
+		.append(" [")
 		.append(super.start)
 		.append(" -> ")
 		.append(super.end)

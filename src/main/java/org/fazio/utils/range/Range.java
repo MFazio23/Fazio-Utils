@@ -73,7 +73,7 @@ public abstract class Range<V> {
 	}
 	
 	public String toString() {
-		return "Range: " + this.start + " -> " + this.end + " [" + (this.end - this.start) + "]";
+		return "Range: Size = " + (this.end - this.start) + " [" + this.start + " -> " + this.end + "]";
 	}
 
 	public String toString(final int level) {

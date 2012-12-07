@@ -170,4 +170,29 @@ public class RangeGroupTest {
 		assertEquals("The basic range's subrange list is an incorrect size", 175.0, this.subRangeGroup.getSubRangeListSize());
 		assertEquals("The returned default range is incorrect.", "SubRange Default", this.subRangeGroup.getRangeValue(161.843));
 	}
+
+	@Test
+	public void testToString() throws Exception {
+		final String basicString = "Range Group: Size = 100.0 [0.0 -> 100.0]\n" +
+			"\tRange Value: Value = 40 basic, Size = 40.0 [0.0 -> 40.0]\n" +
+			"\tRange Value: Value = 20 basic, Size = 20.0 [40.0 -> 60.0]\n" +
+			"\tRange Value: Value = 15 basic, Size = 15.0 [60.0 -> 75.0]";
+		assertEquals("The basic string output is not correct.", basicString, this.basicGroup.toString());
+
+		final String basicDefaultString = "Range Group: Size = 100.0 [0.0 -> 100.0]\n" +
+			"\tRange Value: Value = 22 basicD, Size = 22.0 [0.0 -> 22.0]\n" +
+			"\tRange Value: Value = 16 basicD, Size = 16.0 [22.0 -> 38.0]\n" +
+			"\tRange Value: Value = 42 basicD, Size = 42.0 [38.0 -> 80.0]\n" +
+			"\tRange Value: Value = Default basicD, Size = 20.0 [80.0 -> 100.0] (Default)";
+		assertEquals("The basic w/ default string output is not correct.", basicDefaultString, this.basicDefaultGroup.toString());
+
+		final String multiLevelString = "Range Group: Size = 75.0 [0.0 -> 75.0]\n" +
+			"\tRange Value: Value = 25 multiLevel, Size = 25.0 [0.0 -> 25.0]\n" +
+			"\tRange Value: Value = 30 multiLevel, Size = 30.0 [25.0 -> 55.0]\n" +
+			"\tRange Group: Size = 50.0 [55.0 -> 105.0]\n" +
+			"\t\tRange Value: Value = Inner 20, Size = 20.0 [0.0 -> 20.0]\n" +
+			"\t\tRange Value: Value = Inner 35, Size = 35.0 [20.0 -> 55.0]\n" +
+			"\t\tRange Value: Value = Inner 15, Size = 15.0 [55.0 -> 70.0]";
+		assertEquals("The multi-level string output is not correct.", multiLevelString, this.multiLevelGroup.toString());
+	}
 }
