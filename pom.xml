@@ -75,11 +75,11 @@
     <distributionManagement>
         <repository>
             <id>release-repo</id>
-            <url>${fazio-mvn-repo-location}/releases</url>
+            <url>file://${fazio-mvn-repo-location}/releases</url>
         </repository>
         <snapshotRepository>
             <id>snapshot-repo</id>
-            <url>${fazio-mvn-repo-location}/snapshots</url>
+            <url>file://${fazio-mvn-repo-location}/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
