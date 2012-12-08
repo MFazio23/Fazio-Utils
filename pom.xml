@@ -61,13 +61,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
+                <version>2.3.2</version>
             </plugin>
         </plugins>
     </build>
 
     <scm>
-        <connection>scm:git:git://github.com/MFazio23/FazioUtils.git</connection>
-        <url>scm:git:git://github.com/MFazio23/FazioUtils.git</url>
+        <connection>scm:git:git@github.com:MFazio23/FazioUtils.git</connection>
+        <developerConnection>scm:git:git@github.com:MFazio23/FazioUtils.git</developerConnection>
+        <url>scm:git:git@github.com:MFazio23/FazioUtils.git</url>
     </scm>
 
     <distributionManagement>
