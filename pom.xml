@@ -68,9 +68,9 @@
     </build>
 
     <scm>
-        <connection>scm:git:git@github.com:MFazio23/FazioUtils.git</connection>
-        <developerConnection>scm:git:git@github.com:MFazio23/FazioUtils.git</developerConnection>
-        <url>scm:git:git@github.com:MFazio23/FazioUtils.git</url>
+        <connection>scm:git:git@github.com:MFazio23/Fazio-Utils.git</connection>
+        <developerConnection>scm:git:git@github.com:MFazio23/Fazio-Utils.git</developerConnection>
+        <url>scm:git:git@github.com:MFazio23/Fazio-Utils.git</url>
   </scm>
 
     <distributionManagement>
