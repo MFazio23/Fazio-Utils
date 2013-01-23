@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -169,6 +170,14 @@ public class RangeGroupTest {
 		assertEquals("The default range's size is incorrect", 92.5, this.subRangeGroup.getDefaultRange().getRangeSize());
 		assertEquals("The basic range's subrange list is an incorrect size", 175.0, this.subRangeGroup.getSubRangeListSize());
 		assertEquals("The returned default range is incorrect.", "SubRange Default", this.subRangeGroup.getRangeValue(161.843));
+
+		assertNull("The default range should not exist", this.rangeSizeGroup.getDefaultRange());
+		assertEquals("The range size group's subrange list is an incorrect size", 110.0, this.rangeSizeGroup.getSubRangeListSize());
+		this.rangeSizeGroup.setSubRangeSize(175);
+		assertNull("The default range should not exist", this.rangeSizeGroup.getDefaultRange());
+		assertEquals("The range size group's subrange list is an incorrect size", 110.0, this.rangeSizeGroup.getSubRangeListSize());
+		assertNull("The returned range should be null.", this.rangeSizeGroup.getRangeValue(161.154));
+
 	}
 
 	@Test

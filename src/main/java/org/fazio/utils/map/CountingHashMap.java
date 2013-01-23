@@ -14,6 +14,10 @@ public class CountingHashMap<K, V extends Number>
 		this.put(key, 0);
 	}
 
+	public void putAll(final Collection<K> keys) {
+		for(K key : keys) this.put(key);
+	}
+
 	public void reset() {
 		this.setAll(0);
 	}

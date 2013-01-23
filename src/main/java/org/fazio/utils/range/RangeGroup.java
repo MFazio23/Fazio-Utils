@@ -95,8 +95,10 @@ public class RangeGroup<V> extends Range<V> {
 	}
 
 	public double setSubRangeSize(final double subRangeSize) {
-		if(this.defaultRange != null) this.defaultRange.setEnd(subRangeSize);
-		this.subRangeSize = subRangeSize;
+		if(this.defaultRange != null) {
+			this.defaultRange.setEnd(subRangeSize);
+			this.subRangeSize = subRangeSize;
+		}
 		return subRangeSize;
 	}
 

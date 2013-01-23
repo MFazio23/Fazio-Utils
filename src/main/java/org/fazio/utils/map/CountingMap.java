@@ -1,5 +1,6 @@
 package org.fazio.utils.map;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -9,6 +10,7 @@ import java.util.Map;
 public interface CountingMap<K, V extends Number> extends Map<K, Number> {
 
 	public void put(final K key);
+	public void putAll(final Collection<K> keys);
 	public void reset();
 	public void setAll(final Number amount);
 	public void increaseCount(final K key);

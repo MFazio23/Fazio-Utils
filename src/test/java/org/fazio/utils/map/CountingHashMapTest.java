@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Michael Fazio
@@ -73,6 +72,20 @@ public class CountingHashMapTest {
 		this.map.put(key2);
 		assertEquals("The number of items in the map is incorrect.", 9, this.map.size());
 		assertEquals("The value for \"" + key2 + "\" is incorrect.", 0, this.map.get(key2).intValue());
+	}
+
+	@Test
+	public void testPutAll() throws Exception {
+		final List<String> keys = new ArrayList<String>() {{
+			this.add("Spurs");
+			this.add("Hawks");
+			this.add("Thunder");
+		}};
+
+		for(String key : keys) assertFalse("The map contains \"" + key + "\" and should not.", this.map.containsKey(key));
+		this.map.putAll(keys);
+		assertEquals("The number of items in the map is incorrect.", 10, this.map.size());
+		for(String key : keys) assertEquals("The value for \"" + key + "\" is incorrect.", 0, this.map.get(key).intValue());
 	}
 
 	@Test
@@ -155,9 +168,26 @@ public class CountingHashMapTest {
 			assertEquals("The value in the sorted map is not what was expected.", sortedKeys[x], keys.get(x));
 		}
 
-		this.map.sortByCounts(false);
+		final String[] updatedKeys = {"76ers", "Bucks", "Pistons", "Bulls", "MagicThunder", "MagicThunder", "Lakers", "Celtics"};
+		this.map.put("Thunder", 7);
+		this.map.sortByCounts();
 
 		keys = new ArrayList<String>(this.map.keySet());
+		for(int x=0;x<this.map.size();x++) {
+			if(keys.get(x).equals("Magic") || keys.get(x).equals("Thunder"))
+				assertEquals("The value in the sorted map is not what was expected.", updatedKeys[x], "MagicThunder");
+			else
+				assertEquals("The value in the sorted map is not what was expected.", updatedKeys[x], keys.get(x));
+		}
+	}
+
+	@Test
+	public void testSortByCountsHighToLow() throws Exception {
+		final String[] sortedKeys = {"76ers", "Bucks", "Pistons", "Bulls", "Magic", "Lakers", "Celtics"};
+
+		this.map.sortByCounts(false);
+
+		List<String> keys = new ArrayList<String>(this.map.keySet());
 		for(int x=0;x<this.map.size();x++) {
 			assertEquals("The value in the sorted map is not what was expected.", sortedKeys[x], keys.get(this.map.size() - 1 - x));
 		}
