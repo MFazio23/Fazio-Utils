@@ -96,9 +96,9 @@ public class CountingHashMap<K, V extends Number>
 
 		for(CountingMap.Entry<K, Number> entry : this.entrySet()) {
 			sb
-				.append(entry.getKey())
+				.append(entry.getKey().toString())
 				.append(" = ")
-				.append(entry.getValue())
+				.append(entry.getValue().toString())
 				.append('\n');
 		}
 
