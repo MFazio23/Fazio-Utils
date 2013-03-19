@@ -192,4 +192,30 @@ public class CountingHashMapTest {
 			assertEquals("The value in the sorted map is not what was expected.", sortedKeys[x], keys.get(this.map.size() - 1 - x));
 		}
 	}
+
+	@Test
+	public void testToString() throws Exception {
+		final StringBuilder sb = new StringBuilder()
+			.append("Lakers = 8\n")
+			.append("Celtics = 13\n")
+			.append("Magic = 7\n")
+			.append("76ers = 0\n")
+			.append("Bucks = 2\n")
+			.append("Pistons = 4\n")
+			.append("Bulls = 5\n");
+		
+		assertEquals("The returned string is incorrect.", sb.toString(), this.map.toString());
+		
+		this.map.increaseCount("Raptors");
+
+		sb.append("Raptors = 1\n");
+		
+		assertEquals("The returned string is incorrect.", sb.toString(), this.map.toString());
+
+		this.map.increaseCount("Hawks", 3);
+
+		sb.append("Hawks = 3\n");
+		
+		assertEquals("The returned string is incorrect.", sb.toString(), this.map.toString());
+	}
 }

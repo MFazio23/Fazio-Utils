@@ -77,6 +77,7 @@ public class CountingHashMap<K, V extends Number>
 		});
 	}
 
+	//TODO: Do I need lowToHigh here?
 	public void sortMap(final boolean lowToHigh, final Comparator<CountingMap.Entry<K, Number>> comparator) {
 		final List<CountingMap.Entry<K, Number>> entryList = new ArrayList<Map.Entry<K, Number>>(this.entrySet());
 
@@ -87,5 +88,20 @@ public class CountingHashMap<K, V extends Number>
 		for(CountingMap.Entry<K, Number> entry : entryList) {
 			this.put(entry.getKey(), entry.getValue());
 		}
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+
+		for(CountingMap.Entry<K, Number> entry : this.entrySet()) {
+			sb
+				.append(entry.getKey())
+				.append(" = ")
+				.append(entry.getValue())
+				.append('\n');
+		}
+
+		return sb.toString();
 	}
 }
