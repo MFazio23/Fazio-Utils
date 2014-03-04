@@ -1,14 +1,11 @@
 package org.fazio.utils.pair;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 
 /**
  * @author Michael Fazio
@@ -20,8 +17,13 @@ public class PairTest {
 	public static final String RIGHT_VALUE = "RightValue";
 	public static final Integer INT_VALUE = 23;
 
+	public static final String STRING_PAIR_TOSTRING = "Pair{left=" + LEFT_VALUE + ", right=" + RIGHT_VALUE + "}";
+	public static final String INTLIST_PAIR_TOSTRING = "Pair{left=" + INT_VALUE + ", right=[]}";
+
 	private Pair<String, String> stringPair;
 	private Pair<Integer, List<String>> intListPair;
+
+
 
 	@Before
 	public void setUp() throws Exception {
@@ -31,22 +33,28 @@ public class PairTest {
 
 	@Test
 	public void testGet() throws Exception {
-		assertEquals("The left String value does not match", LEFT_VALUE, this.stringPair.getLeft());
-		assertEquals("The right String value does not match", RIGHT_VALUE, this.stringPair.getRight());
-		assertEquals("The left Integer value does not match", INT_VALUE, this.intListPair.getLeft());
-		assertEquals("The returned value is not correct", ArrayList.class, this.intListPair.getRight().getClass());
+		Assert.assertEquals("The left String value does not match", LEFT_VALUE, this.stringPair.getLeft());
+		Assert.assertEquals("The right String value does not match", RIGHT_VALUE, this.stringPair.getRight());
+		Assert.assertEquals("The left Integer value does not match", INT_VALUE, this.intListPair.getLeft());
+		Assert.assertEquals("The returned value is not correct", ArrayList.class, this.intListPair.getRight().getClass());
 	}
 
 	@Test
 	public void testContains() throws Exception {
-		assertTrue("The default left String value is not found in the pair", this.stringPair.contains(LEFT_VALUE));
-		assertTrue("The default right String value is not found in the pair", this.stringPair.contains(RIGHT_VALUE));
-		assertFalse("An incorrect value was found in the pair", this.stringPair.contains("BLARHGH"));
-		assertFalse("An incorrect value was found in the pair", this.stringPair.contains(INT_VALUE));
-		assertTrue("The default Integer value was not found in the pair", this.intListPair.contains(INT_VALUE));
-		assertTrue("An ArrayList instance was not found in the pair", this.intListPair.contains(new ArrayList<String>()));
-		assertFalse(
+		Assert.assertTrue("The default left String value is not found in the pair", this.stringPair.contains(LEFT_VALUE));
+		Assert.assertTrue("The default right String value is not found in the pair", this.stringPair.contains(RIGHT_VALUE));
+		Assert.assertFalse("An incorrect value was found in the pair", this.stringPair.contains("BLARHGH"));
+		Assert.assertFalse("An incorrect value was found in the pair", this.stringPair.contains(INT_VALUE));
+		Assert.assertTrue("The default Integer value was not found in the pair", this.intListPair.contains(INT_VALUE));
+		Assert.assertTrue("An ArrayList instance was not found in the pair", this.intListPair.contains(new ArrayList<String>()));
+		Assert.assertFalse(
 			"The incorrect ArrayList instance was found in the pair",
 			this.intListPair.contains(new ArrayList<String>(){{add("Testing");}}));
+	}
+
+	@Test
+	public void testToString() {
+		Assert.assertEquals("The toString value from the Pair is incorrect.", STRING_PAIR_TOSTRING, this.stringPair.toString());
+		Assert.assertEquals("The toString value from the Pair is incorrect.", INTLIST_PAIR_TOSTRING, this.intListPair.toString());
 	}
 }

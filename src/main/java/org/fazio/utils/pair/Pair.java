@@ -25,4 +25,12 @@ public class Pair<L, R> {
 	public boolean contains(final Object value) {
 		return this.left.equals(value) || this.right.equals(value);
 	}
+
+	@Override
+	public String toString() {
+		return "Pair{" +
+			"left=" + left +
+			", right=" + right +
+			'}';
+	}
 }
